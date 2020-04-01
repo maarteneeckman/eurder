@@ -1,5 +1,7 @@
-package com.switchfully.eurder.domain;
+package com.switchfully.eurder.domain.customer;
 
+import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
+import com.switchfully.eurder.domain.exceptions.CustomerNotUniqueException;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

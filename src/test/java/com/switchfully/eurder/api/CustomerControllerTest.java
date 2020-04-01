@@ -1,17 +1,15 @@
 package com.switchfully.eurder.api;
 
-import com.switchfully.eurder.domain.Address;
-import com.switchfully.eurder.domain.Customer;
-import com.switchfully.eurder.domain.Customer.CustomerBuilder;
-import com.switchfully.eurder.domain.CustomerRepository;
-import com.switchfully.eurder.service.CustomerDto;
-import com.switchfully.eurder.service.CustomerMapper;
-import com.switchfully.eurder.service.CustomerService;
-import org.assertj.core.api.Assertions;
+import com.switchfully.eurder.domain.customer.Address;
+import com.switchfully.eurder.domain.customer.Customer;
+import com.switchfully.eurder.domain.customer.Customer.CustomerBuilder;
+import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.service.customer.CustomerDto;
+import com.switchfully.eurder.service.customer.CustomerMapper;
+import com.switchfully.eurder.service.customer.CustomerService;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerControllerTest {
 

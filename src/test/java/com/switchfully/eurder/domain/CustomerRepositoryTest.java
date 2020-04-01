@@ -1,6 +1,11 @@
 package com.switchfully.eurder.domain;
 
-import com.switchfully.eurder.domain.Customer.CustomerBuilder;
+import com.switchfully.eurder.domain.customer.Address;
+import com.switchfully.eurder.domain.customer.Customer;
+import com.switchfully.eurder.domain.customer.Customer.CustomerBuilder;
+import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
+import com.switchfully.eurder.domain.exceptions.CustomerNotUniqueException;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

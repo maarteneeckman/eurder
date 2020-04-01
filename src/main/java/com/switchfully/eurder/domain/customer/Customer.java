@@ -1,4 +1,4 @@
-package com.switchfully.eurder.domain;
+package com.switchfully.eurder.domain.customer;
 
 
 import java.util.Objects;

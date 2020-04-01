@@ -1,4 +1,4 @@
-package com.switchfully.eurder.domain;
+package com.switchfully.eurder.domain.customer;
 
 public class Address {
     private final String street;

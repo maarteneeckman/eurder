@@ -1,7 +1,7 @@
-package com.switchfully.eurder.service;
+package com.switchfully.eurder.service.customer;
 
-import com.switchfully.eurder.domain.Customer;
-import com.switchfully.eurder.domain.Customer.CustomerBuilder;
+import com.switchfully.eurder.domain.customer.Customer;
+import com.switchfully.eurder.domain.customer.Customer.CustomerBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
