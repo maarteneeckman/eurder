@@ -3,6 +3,7 @@ package com.switchfully.eurder.service.customer;
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class CustomerDto {
@@ -47,4 +48,22 @@ public class CustomerDto {
     public long getPhoneNumber() {
         return phoneNumber;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerDto that = (CustomerDto) o;
+        return phoneNumber == that.phoneNumber &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email, phoneNumber);
+    }
+
+
 }

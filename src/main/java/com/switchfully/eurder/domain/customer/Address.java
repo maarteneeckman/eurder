@@ -12,4 +12,20 @@ public class Address {
         this.city = city;
         this.postcode = postcode;
     }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public int getPostcode() {
+        return postcode;
+    }
 }

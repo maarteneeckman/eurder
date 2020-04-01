@@ -2,9 +2,9 @@ package com.switchfully.eurder.api;
 
 import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.domain.exceptions.CustomerNotUniqueException;
+import com.switchfully.eurder.service.customer.CreateCustomerDto;
 import com.switchfully.eurder.service.customer.CustomerDto;
 import com.switchfully.eurder.service.customer.CustomerService;
-import net.bytebuddy.pool.TypePool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +29,8 @@ public class CustomerController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDto createCustomer(@RequestBody CustomerDto customerDto) {
-        customerService.createCustomer(customerDto);
-        return customerDto;
+    public CustomerDto createCustomer(@RequestBody CreateCustomerDto addCustomerDto) {
+        return customerService.createCustomer(addCustomerDto);
     }
 
     /*

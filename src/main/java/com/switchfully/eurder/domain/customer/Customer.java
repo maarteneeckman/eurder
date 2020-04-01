@@ -39,7 +39,7 @@ public class Customer {
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, firstName, lastName, email, address, phoneNumber);
+        return Objects.hash(firstName, lastName, email, phoneNumber);
     }
 
     public UUID getCustomerId() {

@@ -3,6 +3,7 @@ package com.switchfully.eurder.service;
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.service.customer.CreateCustomerDto;
 import com.switchfully.eurder.service.customer.CustomerDto;
 import com.switchfully.eurder.service.customer.CustomerMapper;
 import com.switchfully.eurder.service.customer.CustomerService;
@@ -25,8 +26,17 @@ class CustomerServiceTest {
                 .withEmail("hello@gmail.com")
                 .build();
         CustomerDto customerDto = new CustomerDto(customer);
+        CreateCustomerDto createCustomerDto = new CreateCustomerDto(
+                "John",
+                "Doe",
+                "hello@gmail.com",
+                "Main street",
+                10,
+                "Metropolis",
+                1000,
+                100);
         //when
-        service.createCustomer(customerDto);
+        service.createCustomer(createCustomerDto);
         //then
         Assertions.assertThat(customerRepository.getCustomers().values().size()).isEqualTo(1);
     }
@@ -37,10 +47,8 @@ class CustomerServiceTest {
         CustomerRepository customerRepository = new CustomerRepository();
         CustomerMapper customerMapper = new CustomerMapper();
         CustomerService service = new CustomerService(customerRepository, customerMapper);
-        Customer customer = Customer.CustomerBuilder.newCustomer()
-                .build();
-        CustomerDto customerDto = new CustomerDto(customer);
+        CreateCustomerDto createCustomerDto = new CreateCustomerDto("","","","",0,"",0,0);
         //then
-        Assertions.assertThatThrownBy(()->service.createCustomer(customerDto)).isInstanceOf(IllegalArgumentException.class);
+        Assertions.assertThatThrownBy(()->service.createCustomer(createCustomerDto)).isInstanceOf(IllegalArgumentException.class);
     }
 }
