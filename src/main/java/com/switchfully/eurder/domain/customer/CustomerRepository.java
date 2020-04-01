@@ -13,7 +13,6 @@ public class CustomerRepository {
 
     private Map<UUID, Customer> customers = new HashMap<>();
 
-
     public void addCustomer(Customer customer) {
         if(customers.values().stream()
                 .anyMatch(cust -> cust.equals(customer))){
