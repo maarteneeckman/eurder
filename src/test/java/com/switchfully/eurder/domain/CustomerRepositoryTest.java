@@ -45,10 +45,17 @@ class CustomerRepositoryTest {
                 .withPhoneNumber(100)
                 .withEmail("hello@gmail.com")
                 .build();
+        Customer customer2 = CustomerBuilder.newCustomer()
+                .withFirstName("John")
+                .withLastName("Doe")
+                .withAddress(new Address("Main street", 10, "Metropolis",1000))
+                .withPhoneNumber(100)
+                .withEmail("hello@gmail.com")
+                .build();
         //when
         repo.addCustomer(customer);
         //then
-        assertThatThrownBy(() -> repo.addCustomer(customer)).isInstanceOf(CustomerNotUniqueException.class);
+        assertThatThrownBy(() -> repo.addCustomer(customer2)).isInstanceOf(CustomerNotUniqueException.class);
     }
 
     @Test

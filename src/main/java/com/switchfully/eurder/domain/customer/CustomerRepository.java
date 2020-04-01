@@ -15,7 +15,8 @@ public class CustomerRepository {
 
 
     public void addCustomer(Customer customer) {
-        if(customers.get(customer.getId()) != null){
+        if(customers.values().stream()
+                .anyMatch(cust -> cust.equals(customer))){
             throw new CustomerNotUniqueException("Customer already exists!");
         }
         customers.put(customer.getId(), customer);
