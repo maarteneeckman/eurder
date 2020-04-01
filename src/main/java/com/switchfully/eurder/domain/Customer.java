@@ -32,7 +32,6 @@ public class Customer {
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
         return phoneNumber == customer.phoneNumber &&
-                Objects.equals(customerId, customer.customerId) &&
                 Objects.equals(firstName, customer.firstName) &&
                 Objects.equals(lastName, customer.lastName) &&
                 Objects.equals(email, customer.email);
@@ -43,11 +42,35 @@ public class Customer {
         return Objects.hash(customerId, firstName, lastName, email, address, phoneNumber);
     }
 
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
     /*
     builder
      */
 
-    static class CustomerBuilder {
+    public static class CustomerBuilder {
 
         private String firstName;
         private String lastName;

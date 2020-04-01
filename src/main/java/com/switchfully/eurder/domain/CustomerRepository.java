@@ -1,9 +1,12 @@
 package com.switchfully.eurder.domain;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Repository
 public class CustomerRepository {
 
     private Map<UUID, Customer> customers = new HashMap<>();
@@ -21,5 +24,9 @@ public class CustomerRepository {
             throw new CustomerNotFoundException("Customer does not exist!");
         }
         return customers.get(customerId);
+    }
+
+    public Map<UUID, Customer> getCustomers() {
+        return customers;
     }
 }

@@ -1,12 +1,12 @@
 package com.switchfully.eurder.domain;
 
-import org.assertj.core.api.Assertions;
+import com.switchfully.eurder.domain.Customer.CustomerBuilder;
 import org.junit.jupiter.api.Test;
-
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CustomerRepositoryTest {
 
@@ -14,7 +14,7 @@ class CustomerRepositoryTest {
     void addCustomer_addsCustomer(){
         //given
         CustomerRepository repo = new CustomerRepository();
-        Customer customer = Customer.CustomerBuilder.newCustomer()
+        Customer customer = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis",1000))
@@ -26,14 +26,14 @@ class CustomerRepositoryTest {
         repo.addCustomer(customer);
         Customer actual = repo.getCustomer(customerId);
         //then
-        Assertions.assertThat(actual).isEqualTo(customer);
+        assertThat(actual).isEqualTo(customer);
     }
 
     @Test
     void addCustomer_ifCustomerAlreadyExists_throwException(){
         //given
         CustomerRepository repo = new CustomerRepository();
-        Customer customer = Customer.CustomerBuilder.newCustomer()
+        Customer customer = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis",1000))
@@ -43,7 +43,7 @@ class CustomerRepositoryTest {
         //when
         repo.addCustomer(customer);
         //then
-        Assertions.assertThatThrownBy(() -> repo.addCustomer(customer)).isInstanceOf(CustomerNotUniqueException.class);
+        assertThatThrownBy(() -> repo.addCustomer(customer)).isInstanceOf(CustomerNotUniqueException.class);
     }
 
     @Test
@@ -51,7 +51,7 @@ class CustomerRepositoryTest {
         //given
         CustomerRepository repo = new CustomerRepository();
         //then
-        Assertions.assertThatThrownBy(() -> repo.getCustomer(UUID.randomUUID())).isInstanceOf(CustomerNotFoundException.class);
+        assertThatThrownBy(() -> repo.getCustomer(UUID.randomUUID())).isInstanceOf(CustomerNotFoundException.class);
     }
 
 }
