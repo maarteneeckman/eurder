@@ -1,5 +1,7 @@
 package com.switchfully.eurder.api;
 
+import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
+import com.switchfully.eurder.domain.order.Order;
 import com.switchfully.eurder.service.order.CreateOrderDto;
 import com.switchfully.eurder.service.order.OrderDto;
 import com.switchfully.eurder.service.order.OrderService;
@@ -16,7 +18,7 @@ import java.io.IOException;
 @RequestMapping(path="orders")
 public class OrderController {
 
-    private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+    private final Logger logger = LoggerFactory.getLogger(OrderController.class);
     private final OrderService orderService;
 
     @Autowired
@@ -32,6 +34,12 @@ public class OrderController {
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected void illegalArgumentException(IllegalArgumentException e, HttpServletResponse response) throws IOException {
+        logger.error(e.getMessage());
+        response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    protected void customerNotFoundException(CustomerNotFoundException e, HttpServletResponse response) throws IOException {
         logger.error(e.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }

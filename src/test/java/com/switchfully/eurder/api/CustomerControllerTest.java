@@ -18,7 +18,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.*;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
@@ -85,7 +88,7 @@ class CustomerControllerTest {
 
 
     @Test
-    void getAllCustomers_returnsAllCustomersAsDtos(){
+    void getAllCustomers_returnsAllCustomersAsDtos() {
         //given
         CustomerRepository customerRepository = new CustomerRepository();
         CustomerController controller = new CustomerController(new CustomerService(customerRepository, new CustomerMapper()));
@@ -111,7 +114,55 @@ class CustomerControllerTest {
         customerRepository.addCustomer(customer2);
 
         //then
-        Assertions.assertThat(controller.getAllCustomers()).containsExactlyInAnyOrder(customerDto,customerDto2);
+        Assertions.assertThat(controller.getAllCustomers()).containsExactlyInAnyOrder(customerDto, customerDto2);
+    }
+
+    @Test
+    void getCustomerById_ifCustomerDoesNotExist_returnStatus400() {
+        String fakeId = UUID.randomUUID().toString();
+        WebTestClient.ResponseSpec response = this.webTestClient.get()
+                .uri("/customers/"+ fakeId)
+                .exchange();
+        response.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void getCustomerById_ifCustomerExists_returnCorrectDto(){
+        //given
+        CreateCustomerDto createCustomerDto = new CreateCustomerDto(
+                "Jane",
+                "Doe",
+                "hello@gmail.com",
+                "Main street",
+                10,
+                "Metropolis",
+                1000,
+                100);
+        WebTestClient.ResponseSpec response1 = webTestClient.post()
+                .uri("/customers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(createCustomerDto), CreateCustomerDto.class)
+                .exchange();
+        CustomerDto customerDto = response1
+                .expectBody(CustomerDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        WebTestClient.ResponseSpec response2 = this.webTestClient.get()
+                .uri("/customers/" + customerDto.getCustomerId().toString())
+                .exchange();
+        response2.expectStatus().isEqualTo(HttpStatus.OK);
+        CustomerDto actual = response2.expectBody(CustomerDto.class)
+                .returnResult()
+                .getResponseBody();
+        CustomerDto expected = new CustomerDto(
+                customerDto.getCustomerId(),
+                "Jane",
+                "Doe",
+                "hello@gmail.com",
+                new Address("Main street",10,"Metropolis",1000),
+                100);
+        assertThat(actual).isEqualTo(expected);
     }
 
 }

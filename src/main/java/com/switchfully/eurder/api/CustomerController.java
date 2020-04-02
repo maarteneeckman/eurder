@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.UUID;
 
 
 @RestController
@@ -37,10 +38,16 @@ public class CustomerController {
     }
 
 
-    @GetMapping(produces="application/json")
+    @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<CustomerDto> getAllCustomers(){
+    public Collection<CustomerDto> getAllCustomers() {
         return customerService.getAllCustomers();
+    }
+
+    @GetMapping(path = "{id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDto getCustomerById(@PathVariable UUID id) {
+        return customerService.getCustomerById(id);
     }
 
 

@@ -20,7 +20,7 @@ import java.util.Collection;
 @RequestMapping(path = "items")
 public class ItemController {
 
-    private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+    private final Logger logger = LoggerFactory.getLogger(ItemController.class);
     ItemService itemService;
 
     @Autowired

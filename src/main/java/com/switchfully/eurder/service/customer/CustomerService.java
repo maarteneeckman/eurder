@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,5 +53,10 @@ public class CustomerService {
         return customerRepository.getCustomers().stream()
                 .map(customer -> new CustomerDto(customer))
                 .collect(Collectors.toList());
+    }
+
+    public CustomerDto getCustomerById(UUID id) {
+        Customer customer = customerRepository.getCustomer(id);
+        return new CustomerDto(customer);
     }
 }
