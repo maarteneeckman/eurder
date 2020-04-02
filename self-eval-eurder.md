@@ -64,7 +64,7 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - [x] The functional requirements are implemented
  - [x] The requirements are tested with Postman
  - [x] The requirements are unit tested
- - [ ] The requirements are integration tested
+ - [x] The requirements are integration tested
  - [ ] Proper logging is setup
  - [ ] I did a "codereview" of my own code before declaring it "done".
  - [x] I commit/push my code when this story was done

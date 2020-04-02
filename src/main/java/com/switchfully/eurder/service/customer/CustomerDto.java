@@ -25,6 +25,16 @@ public class CustomerDto {
         phoneNumber = customer.getPhoneNumber();
     }
 
+    //this "standard" constructor is necessary for tests: jackson needs it to deserialize a json file
+    public CustomerDto(UUID customerId, String firstName, String lastName, String email, Address address, long phoneNumber) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
     public UUID getCustomerId() {
         return customerId;
     }
