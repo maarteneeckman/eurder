@@ -74,18 +74,18 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - [x] The requirements are tested with Postman
  - [x] The requirements are unit tested
  - [x] The requirements are integration tested
- - [ ] Proper logging is setup
+ - [x] Proper logging is setup
  - [ ] I did a "codereview" of my own code before declaring it "done".
  - [x] I commit/push my code when this story was done
 ### Comments: 
 ## Story 8
- - [ ] The functional requirements are implemented
- - [ ] The requirements are tested with Postman
- - [ ] The requirements are unit tested
- - [ ] The requirements are integration tested
- - [ ] Proper logging is setup
+ - [x] The functional requirements are implemented
+ - [x] The requirements are tested with Postman
+ - [x] The requirements are unit tested
+ - [x] The requirements are integration tested
+ - [x] Proper logging is setup
  - [ ] I did a "codereview" of my own code before declaring it "done".
- - [ ] I commit/push my code when this story was done
+ - [x] I commit/push my code when this story was done
 ### Comments: 
 ## Nice-To-Have stories
  - [ ] Story 4
