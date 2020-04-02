@@ -22,9 +22,7 @@ public class Customer {
         this.phoneNumber = builder.phoneNumber;
     }
 
-    public UUID getId() {
-        return customerId;
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -42,7 +40,7 @@ public class Customer {
         return Objects.hash(firstName, lastName, email, phoneNumber);
     }
 
-    public UUID getCustomerId() {
+    public UUID getId() {
         return customerId;
     }
 

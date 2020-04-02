@@ -17,7 +17,7 @@ public class CustomerDto {
 
 
     public CustomerDto(Customer customer) {
-        customerId = customer.getCustomerId();
+        customerId = customer.getId();
         firstName = customer.getFirstName();
         lastName = customer.getLastName();
         email = customer.getEmail();
