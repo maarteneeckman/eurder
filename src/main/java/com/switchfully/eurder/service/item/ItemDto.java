@@ -1,6 +1,7 @@
 package com.switchfully.eurder.service.item;
 
 import com.switchfully.eurder.domain.item.Item;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,6 +19,14 @@ public class ItemDto {
         this.description = item.getDescription();
         this.price = item.getPrice();
         this.amountInStock = item.getAmountInStock();
+    }
+
+    public ItemDto(UUID itemId, String name, String description, double price, int amountInStock) {
+        this.itemId = itemId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.amountInStock = amountInStock;
     }
 
     public UUID getItemId() {

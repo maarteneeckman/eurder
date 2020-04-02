@@ -25,7 +25,7 @@ class ItemServiceTest {
         //when
         itemService.addItem(createItemDto);
         //then
-        assertThat(itemRepository.getAllItems().values().size()).isEqualTo(1);
+        assertThat(itemRepository.getAllItems().size()).isEqualTo(1);
     }
 
     @Test
@@ -62,6 +62,30 @@ class ItemServiceTest {
                 -6);
         //then
         assertThatThrownBy(() -> itemService.addItem(createItemDto)).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
+    @Test
+    void getAllItems_returnsCorrectItemDtos(){
+        //given
+        ItemRepository itemRepository = new ItemRepository();
+        ItemService itemService = new ItemService(itemRepository, new ItemMapper());
+
+        Item item1 = new Item(
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                12.5,
+                20);
+        Item item2 = new Item(
+                "Coffee",
+                "Keeps you awake.",
+                2.0,
+                150);
+        itemRepository.addItem(item1);
+        itemRepository.addItem(item2);
+
+        //then
+        assertThat(itemService.getAllItems()).containsExactlyInAnyOrder(new ItemDto(item1), new ItemDto(item2));
 
     }
 

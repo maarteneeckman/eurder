@@ -53,7 +53,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void createCustomer_whenCustomerIsValid_returnStatus201() {
+    void createItem_whenItemIsValid_returnStatus201() {
         CreateItemDto createItemDto = new CreateItemDto(
                 "Pen",
                 "It writes underwater. It also writes other words.",
@@ -65,6 +65,51 @@ class ItemControllerTest {
                 .body(Mono.just(createItemDto), CreateItemDto.class)
                 .exchange();
         response.expectStatus().isEqualTo(HttpStatus.CREATED);
+    }
+
+    @Test
+    void getAllItems_returnsCorrectItemDtos(){
+        //given
+        CreateItemDto createItemDto1 = new CreateItemDto(
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                12.5,
+                20);
+        webTestClient.post()
+                .uri("/items")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(createItemDto1), CreateItemDto.class)
+                .exchange();
+        Item item1 = new Item(
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                12.5,
+                20);
+        ItemDto expectedItemDto1 = new ItemDto(item1);
+
+        CreateItemDto createItemDto2 = new CreateItemDto(
+                "Coffee",
+                "Keeps you awake.",
+                2,
+                150);
+        webTestClient.post()
+                .uri("/items")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(createItemDto2), CreateItemDto.class)
+                .exchange();
+        Item item2 = new Item(
+                "Coffee",
+                "Keeps you awake.",
+                2.0,
+                150);
+        ItemDto expectedItemDto2 = new ItemDto(item2);
+
+        WebTestClient.ResponseSpec response3 = webTestClient.get()
+                .uri("/items")
+                .exchange();
+        response3.expectStatus().isOk()
+                .expectBodyList(ItemDto.class)
+                .contains(expectedItemDto1, expectedItemDto2);
     }
 
 

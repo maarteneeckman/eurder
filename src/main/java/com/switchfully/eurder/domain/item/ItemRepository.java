@@ -5,6 +5,7 @@ import com.switchfully.eurder.domain.exceptions.ItemNotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Repository
 public class ItemRepository {
 
-    Map<UUID, Item> items;
+    private final Map<UUID, Item> items;
 
     @Autowired
     public ItemRepository() {
@@ -34,7 +35,7 @@ public class ItemRepository {
         return items.get(itemId);
     }
 
-    public Map<UUID, Item> getAllItems() {
-        return items;
+    public Collection<Item> getAllItems() {
+        return items.values();
     }
 }

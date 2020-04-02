@@ -62,8 +62,8 @@ Which choices did you make? (List your choices below, remove what is not relevan
 ### Comments:
 ## Story 3
  - [x] The functional requirements are implemented
- - [ ] The requirements are tested with Postman
- - [ ] The requirements are unit tested
+ - [x] The requirements are tested with Postman
+ - [x] The requirements are unit tested
  - [ ] The requirements are integration tested
  - [ ] Proper logging is setup
  - [ ] I did a "codereview" of my own code before declaring it "done".
@@ -92,7 +92,7 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - [ ] Story 5
  - [ ] Story 6
  - [ ] Story 9
- - [ ] Story 10
+ - [partially done] Story 10
 ### Comments:
 The main issue is debugging POST messages. If something goes wrong with an incoming POST request, the system gives
 strange and completely unhelpful error messages. It seems to be related to composite objects (objects within objects)?

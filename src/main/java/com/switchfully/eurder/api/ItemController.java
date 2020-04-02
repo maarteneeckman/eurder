@@ -2,6 +2,7 @@ package com.switchfully.eurder.api;
 
 import com.switchfully.eurder.domain.exceptions.ItemNotFoundException;
 import com.switchfully.eurder.domain.exceptions.ItemNotUniqueException;
+import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.service.item.CreateItemDto;
 import com.switchfully.eurder.service.item.ItemDto;
 import com.switchfully.eurder.service.item.ItemService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 @RestController
 @RequestMapping(path = "items")
@@ -30,6 +32,12 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto addItem(@RequestBody CreateItemDto createItemDto) {
         return itemService.addItem(createItemDto);
+    }
+
+    @GetMapping(produces="application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<ItemDto> getAllItems(){
+        return itemService.getAllItems();
     }
 
 
