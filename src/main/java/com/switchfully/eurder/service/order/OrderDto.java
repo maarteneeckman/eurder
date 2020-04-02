@@ -16,6 +16,18 @@ public class OrderDto {
         this.itemGroupDtos = itemGroupDtos;
     }
 
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
+    public List<ItemGroupDto> getItemGroupDtos() {
+        return itemGroupDtos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

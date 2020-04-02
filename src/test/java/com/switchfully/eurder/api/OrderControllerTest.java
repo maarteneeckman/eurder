@@ -6,6 +6,7 @@ import com.switchfully.eurder.domain.customer.CustomerRepository;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
 import com.switchfully.eurder.service.customer.CreateCustomerDto;
+import com.switchfully.eurder.service.item.CreateItemDto;
 import com.switchfully.eurder.service.order.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,27 +85,41 @@ class OrderControllerTest {
 //    @Test
 //    void placeOrder_whenOrderIsValid_returnStatus201() {
 //        //given
-//        CustomerRepository customerRepository = new CustomerRepository();
-//        ItemRepository itemRepository = new ItemRepository();
+////        CustomerRepository customerRepository = new CustomerRepository();
+////        ItemRepository itemRepository = new ItemRepository();
 //        //OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
 //        //OrderService orderService = new OrderService(orderMapper);
 //        //OrderController orderController = new OrderController(orderService);
 //
-//        Customer customer = Customer.CustomerBuilder.newCustomer()
-//                .withFirstName("John")
-//                .withLastName("Doe")
-//                .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-//                .withPhoneNumber(100)
-//                .withEmail("hello@gmail.com")
-//                .build();
-//        UUID customerId = customer.getId();
-//        customerRepository.addCustomer(customer);
+//        //add a customer
+//        CreateCustomerDto createCustomerDto = new CreateCustomerDto(
+//                "John",
+//                "Doe",
+//                "hello@gmail.com",
+//                "Main street",
+//                10,
+//                "Metropolis",
+//                1000,
+//                100);
+//        WebTestClient.ResponseSpec response1 = webTestClient.post()
+//                .uri("/customers")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(Mono.just(createCustomerDto), CreateCustomerDto.class)
+//                .exchange();
 //
-//        Item item = new Item(
+//        //add an item
+//        CreateItemDto createItemDto = new CreateItemDto(
 //                "Pen",
 //                "It writes underwater. It also writes other words.",
 //                12.5,
 //                20);
+//        WebTestClient.ResponseSpec response2 = webTestClient.post()
+//                .uri("/items")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(Mono.just(createItemDto), CreateItemDto.class)
+//                .exchange();
+//
+//        //place an order
 //        UUID itemId = item.getId();
 //        itemRepository.addItem(item);
 //

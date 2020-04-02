@@ -16,6 +16,18 @@ public class ItemGroupDto {
         this.shippingDate = shippingDate;
     }
 
+    public UUID getItemId() {
+        return itemId;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public LocalDate getShippingDate() {
+        return shippingDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
