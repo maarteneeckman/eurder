@@ -3,6 +3,7 @@ package com.switchfully.eurder.security;
 import com.switchfully.eurder.security.authentication.EurderAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,9 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@Configuration
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final EurderAuthenticationEntryPoint authEntryPoint;
@@ -32,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CsrfConfigurer<HttpSecurity> csrf = http.csrf();
         HttpSecurity disable = csrf.disable();
         http.csrf().disable().authorizeRequests()
+//                .antMatchers(HttpMethod.POST, "customers").permitAll()
+//                .antMatchers("/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .authenticationEntryPoint(authEntryPoint);
