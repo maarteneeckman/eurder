@@ -38,7 +38,7 @@ class CustomerServiceTest {
         //when
         service.createCustomer(createCustomerDto);
         //then
-        Assertions.assertThat(customerRepository.getCustomers().values().size()).isEqualTo(1);
+        Assertions.assertThat(customerRepository.getCustomers().size()).isEqualTo(1);
     }
 
     @Test

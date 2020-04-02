@@ -4,8 +4,8 @@ import com.switchfully.eurder.service.order.CreateOrderDto;
 import com.switchfully.eurder.service.order.OrderDto;
 import com.switchfully.eurder.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="orders")
@@ -18,7 +18,9 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    public OrderDto placeOrder(CreateOrderDto createOrderDto){
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderDto placeOrder(@RequestBody CreateOrderDto createOrderDto){
         return orderService.placeOrder(createOrderDto);
     }
 }

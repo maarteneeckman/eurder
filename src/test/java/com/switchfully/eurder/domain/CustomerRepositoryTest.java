@@ -6,6 +6,7 @@ import com.switchfully.eurder.domain.customer.Customer.CustomerBuilder;
 import com.switchfully.eurder.domain.customer.CustomerRepository;
 import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.domain.exceptions.CustomerNotUniqueException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -65,5 +66,31 @@ class CustomerRepositoryTest {
         //then
         assertThatThrownBy(() -> repo.getCustomer(UUID.randomUUID())).isInstanceOf(CustomerNotFoundException.class);
     }
+
+    @Test
+    void getCustomers_givesAllCustomers(){
+        //given
+        CustomerRepository repo = new CustomerRepository();
+        Customer customer = CustomerBuilder.newCustomer()
+                .withFirstName("John")
+                .withLastName("Doe")
+                .withAddress(new Address("Main street", 10, "Metropolis",1000))
+                .withPhoneNumber(100)
+                .withEmail("hello@gmail.com")
+                .build();
+        Customer customer2 = CustomerBuilder.newCustomer()
+                .withFirstName("Jane")
+                .withLastName("Doe")
+                .withAddress(new Address("Main street", 10, "Metropolis",1000))
+                .withPhoneNumber(100)
+                .withEmail("hello@gmail.com")
+                .build();
+        repo.addCustomer(customer);
+        repo.addCustomer(customer2);
+
+        //then
+        Assertions.assertThat(repo.getCustomers()).containsExactlyInAnyOrder(customer, customer2);
+    }
+
 
 }

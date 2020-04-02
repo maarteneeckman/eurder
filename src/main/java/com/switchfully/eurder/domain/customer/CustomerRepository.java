@@ -4,6 +4,7 @@ import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.domain.exceptions.CustomerNotUniqueException;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class CustomerRepository {
         return customers.get(customerId);
     }
 
-    public Map<UUID, Customer> getCustomers() {
-        return customers;
+    public Collection<Customer> getCustomers() {
+        return customers.values();
     }
 }

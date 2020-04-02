@@ -5,6 +5,9 @@ import com.switchfully.eurder.domain.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Component
 public class CustomerService {
 
@@ -26,13 +29,13 @@ public class CustomerService {
 
     private void validateCustomerData(CreateCustomerDto createCustomerDto) {
         if (createCustomerDto.getFirstName() == null || createCustomerDto.getFirstName().isEmpty()) {
-            throw new IllegalArgumentException("First name not vacreate.");
+            throw new IllegalArgumentException("First name not valid.");
         }
         if (createCustomerDto.getLastName() == null || createCustomerDto.getLastName().isEmpty()) {
-            throw new IllegalArgumentException("Last name not vcreated");
+            throw new IllegalArgumentException("Last name not valid");
         }
         if (createCustomerDto.getEmail() == null || createCustomerDto.getEmail().isEmpty()) {
-            throw new IllegalArgumentException("Email address not vcreated");
+            throw new IllegalArgumentException("Email address not valid");
         }
         if (createCustomerDto.getCity() == null || createCustomerDto.getCity().isEmpty()
                 || createCustomerDto.getStreet() == null || createCustomerDto.getStreet().isEmpty()
@@ -43,5 +46,11 @@ public class CustomerService {
         if (createCustomerDto.getPhoneNumber() <= 0) {
             throw new IllegalArgumentException("Phone number not valid");
         }
+    }
+
+    public Collection<CustomerDto> getAllCustomers() {
+        return customerRepository.getCustomers().stream()
+                .map(customer -> new CustomerDto(customer))
+                .collect(Collectors.toList());
     }
 }

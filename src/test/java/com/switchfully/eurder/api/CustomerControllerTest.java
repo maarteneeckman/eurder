@@ -8,6 +8,7 @@ import com.switchfully.eurder.service.customer.CreateCustomerDto;
 import com.switchfully.eurder.service.customer.CustomerDto;
 import com.switchfully.eurder.service.customer.CustomerMapper;
 import com.switchfully.eurder.service.customer.CustomerService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -80,5 +81,36 @@ class CustomerControllerTest {
         response.expectStatus().isEqualTo(HttpStatus.CREATED);
     }
 
+
+    @Test
+    void getAllCustomers_returnsAllCustomersAsDtos(){
+        //given
+        CustomerRepository customerRepository = new CustomerRepository();
+        CustomerController controller = new CustomerController(new CustomerService(customerRepository, new CustomerMapper()));
+
+        Customer customer = CustomerBuilder.newCustomer()
+                .withFirstName("John")
+                .withLastName("Doe")
+                .withAddress(new Address("Main street", 10, "Metropolis", 1000))
+                .withPhoneNumber(100)
+                .withEmail("hello@gmail.com")
+                .build();
+        CustomerDto customerDto = new CustomerDto(customer);
+        Customer customer2 = CustomerBuilder.newCustomer()
+                .withFirstName("Jane")
+                .withLastName("Doe")
+                .withAddress(new Address("Main street", 10, "Metropolis", 1000))
+                .withPhoneNumber(100)
+                .withEmail("hello@gmail.com")
+                .build();
+        CustomerDto customerDto2 = new CustomerDto(customer2);
+
+        customerRepository.addCustomer(customer);
+        customerRepository.addCustomer(customer2);
+
+        //then
+        Assertions.assertThat(controller.getAllCustomers()).containsExactlyInAnyOrder(customerDto,customerDto2);
+
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.switchfully.eurder.api;
 
+import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.domain.exceptions.CustomerNotUniqueException;
 import com.switchfully.eurder.service.customer.CreateCustomerDto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 
 @RestController
@@ -27,12 +29,20 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    //@PreAuthorize("true")
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDto createCustomer(@RequestBody CreateCustomerDto addCustomerDto) {
         return customerService.createCustomer(addCustomerDto);
     }
+
+
+    @GetMapping(produces="application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<CustomerDto> getAllCustomers(){
+        return customerService.getAllCustomers();
+    }
+
 
     /*
     error handling
