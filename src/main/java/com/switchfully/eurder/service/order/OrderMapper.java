@@ -40,7 +40,7 @@ public class OrderMapper {
         } else {
             deliveryDate = LocalDate.now().plusDays(7);
         }
-        return new ItemGroup(item, amount, deliveryDate);
+        return new ItemGroup(item, amount, deliveryDate, item.getPrice()*amount);
     }
 
     public OrderDto orderToOrderDto(Order order) {
@@ -51,6 +51,10 @@ public class OrderMapper {
     }
 
     public ItemGroupDto itemGroupToItemGroupDto(ItemGroup itemGroup) {
-        return new ItemGroupDto(itemGroup.getItem().getId(), itemGroup.getAmount(), itemGroup.getShippingDate());
+        return new ItemGroupDto(
+                itemGroup.getItem().getId(),
+                itemGroup.getAmount(),
+                itemGroup.getShippingDate(),
+                itemGroup.getPrice());
     }
 }

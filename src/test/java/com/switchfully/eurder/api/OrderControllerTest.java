@@ -61,7 +61,7 @@ class OrderControllerTest {
         CreateItemGroupDto createItemGroupDto = new CreateItemGroupDto(itemId, amount);
         CreateOrderDto createOrderDto = new CreateOrderDto(customerId, List.of(createItemGroupDto));
 
-        ItemGroupDto itemGroupDto = new ItemGroupDto(itemId, amount, LocalDate.now().plusDays(1));
+        ItemGroupDto itemGroupDto = new ItemGroupDto(itemId, amount, LocalDate.now().plusDays(1), 62.5);
         OrderDto expected = new OrderDto(UUID.randomUUID(), customerId, List.of(itemGroupDto));
 
         //when
@@ -103,7 +103,7 @@ class OrderControllerTest {
         CreateItemGroupDto createItemGroupDto = new CreateItemGroupDto(itemId, amount);
         CreateOrderDto createOrderDto = new CreateOrderDto(customerId, List.of(createItemGroupDto));
 
-        ItemGroupDto itemGroupDto = new ItemGroupDto(itemId, amount, LocalDate.now().plusDays(7));
+        ItemGroupDto itemGroupDto = new ItemGroupDto(itemId, amount, LocalDate.now().plusDays(7), 62.5);
         OrderDto expected = new OrderDto(UUID.randomUUID(), customerId, List.of(itemGroupDto));
 
         //when
@@ -180,7 +180,7 @@ class OrderControllerTest {
 
         OrderDto expectedOrderDto = new OrderDto(UUID.randomUUID(),
                 customerDto.getCustomerId(),
-                List.of(new ItemGroupDto(itemDto.getItemId(), 5, LocalDate.now().plusDays(1))));
+                List.of(new ItemGroupDto(itemDto.getItemId(), 5, LocalDate.now().plusDays(1), 62.5)));
         response.expectBody(OrderDto.class).isEqualTo(expectedOrderDto);
     }
 

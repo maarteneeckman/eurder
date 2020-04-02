@@ -48,7 +48,7 @@ class OrderServiceTest {
         //when
         OrderDto actual = orderService.placeOrder(createOrderDto);
 
-        ItemGroupDto itemGroupDto = new ItemGroupDto(itemId, amount, LocalDate.now().plusDays(1));
+        ItemGroupDto itemGroupDto = new ItemGroupDto(itemId, amount, LocalDate.now().plusDays(1), 62.5);
         OrderDto expected = new OrderDto(UUID.randomUUID(), customerId, List.of(itemGroupDto));
 
         //then

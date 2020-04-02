@@ -9,11 +9,13 @@ public class ItemGroup {
     private final Item item;
     private final int amount;
     private final LocalDate shippingDate;
+    private final double price;
 
-    public ItemGroup(Item item, int amount, LocalDate shippingDate) {
+    public ItemGroup(Item item, int amount, LocalDate shippingDate, double price) {
         this.item = item;
         this.amount = amount;
         this.shippingDate = shippingDate;
+        this.price = price;
     }
 
     public Item getItem() {
@@ -26,5 +28,9 @@ public class ItemGroup {
 
     public LocalDate getShippingDate() {
         return shippingDate;
+    }
+
+    public double getPrice() {
+        return price;
     }
 }

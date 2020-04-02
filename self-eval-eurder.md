@@ -25,9 +25,9 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - What happens if the firstname contains numbers? Is this allowed?
  > At the moment, yes.
  - In which currency are the prices?
- > At the moment, prices are just numbers, not a separate class. (Because of POST issues, see below)
+ > At the moment, prices are just numbers. --> TODO
  - Does the phonenumber include the country code?
- > At the moment, phone numbers are just numbers, not a separate class. (Because of POST issues, see below)
+ > At the moment, phone numbers are just numbers, not a separate class. --> TODO
  - Did you go for a similar architecture as digibooky?
  > More or less.
  - Is your application deployed in the cloud? (Heroku?)
@@ -61,7 +61,7 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - [x] I commit/push my code when this story was done
 ### Comments:
 ## Story 3
- - [ ] The functional requirements are implemented
+ - [x] The functional requirements are implemented
  - [x] The requirements are tested with Postman
  - [x] The requirements are unit tested
  - [x] The requirements are integration tested
@@ -74,7 +74,7 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - [x] The requirements are tested with Postman
  - [x] The requirements are unit tested
  - [x] The requirements are integration tested
- - [] Proper logging is setup
+ - [ ] Proper logging is setup
  - [ ] I did a "codereview" of my own code before declaring it "done".
  - [x] I commit/push my code when this story was done
 ### Comments: 
@@ -94,6 +94,3 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - [ ] Story 9
  - [partially done] Story 10
 ### Comments:
-The main issue is debugging POST messages. If something goes wrong with an incoming POST request, the system gives
-strange and completely unhelpful error messages. It seems to be related to composite objects (objects within objects)?
-I'm trying to figure that out.

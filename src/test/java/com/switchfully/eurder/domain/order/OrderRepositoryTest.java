@@ -28,7 +28,7 @@ class OrderRepositoryTest {
                 12.5,
                 20);
         int amount = 5;
-        ItemGroup itemGroup = new ItemGroup(item, amount, LocalDate.now().plusDays(1));
+        ItemGroup itemGroup = new ItemGroup(item, amount, LocalDate.now().plusDays(1), 62.5);
         Order order = new Order(customer, List.of(itemGroup));
 
         //when
