@@ -9,7 +9,6 @@ public class CreateCustomerDto {
     private final int houseNumber;
     private final String city;
     private final int postcode;
-
     private final long phoneNumber;
 
     public CreateCustomerDto(String firstName, String lastName, String email, String street, int houseNumber, String city, int postcode, long phoneNumber) {

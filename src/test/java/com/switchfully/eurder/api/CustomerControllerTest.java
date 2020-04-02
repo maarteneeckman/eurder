@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 class CustomerControllerTest {
 
     @Test
@@ -110,7 +112,6 @@ class CustomerControllerTest {
 
         //then
         Assertions.assertThat(controller.getAllCustomers()).containsExactlyInAnyOrder(customerDto,customerDto2);
-
     }
 
 }

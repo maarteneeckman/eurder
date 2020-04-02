@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -23,9 +23,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 class OrderControllerTest {
 
     @Test
@@ -70,14 +71,56 @@ class OrderControllerTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @Test
+    void placeOrder_ifItemNotInStock_returnsCorrectDto() {
+        //given
+        CustomerRepository customerRepository = new CustomerRepository();
+        ItemRepository itemRepository = new ItemRepository();
+        OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
+        OrderService orderService = new OrderService(orderMapper);
+        OrderController orderController = new OrderController(orderService);
+
+        Customer customer = Customer.CustomerBuilder.newCustomer()
+                .withFirstName("John")
+                .withLastName("Doe")
+                .withAddress(new Address("Main street", 10, "Metropolis", 1000))
+                .withPhoneNumber(100)
+                .withEmail("hello@gmail.com")
+                .build();
+        UUID customerId = customer.getId();
+        customerRepository.addCustomer(customer);
+
+        Item item = new Item(
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                12.5,
+                0);
+        UUID itemId = item.getId();
+        itemRepository.addItem(item);
+
+        int amount = 5;
+
+        CreateItemGroupDto createItemGroupDto = new CreateItemGroupDto(itemId, amount);
+        CreateOrderDto createOrderDto = new CreateOrderDto(customerId, List.of(createItemGroupDto));
+
+        ItemGroupDto itemGroupDto = new ItemGroupDto(itemId, amount, LocalDate.now().plusDays(7));
+        OrderDto expected = new OrderDto(UUID.randomUUID(), customerId, List.of(itemGroupDto));
+
+        //when
+        OrderDto actual = orderController.placeOrder(createOrderDto);
+
+        //then
+        assertThat(actual).isEqualTo(expected);
+    }
+
 
     @Autowired
-    private WebTestClient webTestClient;
+    private WebTestClient webTestClient2;
 
 
     @Test
     void placeOrder_whenOrderIsNotValid_returnStatus400() {
-        WebTestClient.ResponseSpec response = this.webTestClient.post()
+        WebTestClient.ResponseSpec response = webTestClient2.post()
                 .uri("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .exchange();
@@ -86,13 +129,6 @@ class OrderControllerTest {
 
     @Test
     void placeOrder_whenOrderIsValid_returnStatus201() {
-        //given
-//        CustomerRepository customerRepository = new CustomerRepository();
-//        ItemRepository itemRepository = new ItemRepository();
-        //OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
-        //OrderService orderService = new OrderService(orderMapper);
-        //OrderController orderController = new OrderController(orderService);
-
         //add a customer
         CreateCustomerDto createCustomerDto = new CreateCustomerDto(
                 "John",
@@ -103,7 +139,7 @@ class OrderControllerTest {
                 "Metropolis",
                 1000,
                 100);
-        WebTestClient.ResponseSpec response1 = webTestClient.post()
+        WebTestClient.ResponseSpec response1 = webTestClient2.post()
                 .uri("/customers")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(createCustomerDto), CreateCustomerDto.class)
@@ -119,7 +155,7 @@ class OrderControllerTest {
                 "It writes underwater. It also writes other words.",
                 12.5,
                 20);
-        WebTestClient.ResponseSpec response2 = webTestClient.post()
+        WebTestClient.ResponseSpec response2 = webTestClient2.post()
                 .uri("/items")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(createItemDto), CreateItemDto.class)
@@ -133,7 +169,7 @@ class OrderControllerTest {
         CreateItemGroupDto groupDto = new CreateItemGroupDto(itemDto.getItemId(), 5);
         CreateOrderDto createOrderDto = new CreateOrderDto(customerDto.getCustomerId(), List.of(groupDto));
 
-        WebTestClient.ResponseSpec response = webTestClient.post()
+        WebTestClient.ResponseSpec response = webTestClient2.post()
                 .uri("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(createOrderDto), CreateOrderDto.class)
@@ -146,7 +182,6 @@ class OrderControllerTest {
                 customerDto.getCustomerId(),
                 List.of(new ItemGroupDto(itemDto.getItemId(), 5, LocalDate.now().plusDays(1))));
         response.expectBody(OrderDto.class).isEqualTo(expectedOrderDto);
-
     }
 
 }
