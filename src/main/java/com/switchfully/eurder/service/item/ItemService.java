@@ -2,10 +2,12 @@ package com.switchfully.eurder.service.item;
 
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -46,5 +48,12 @@ public class ItemService {
         return itemRepository.getAllItems().stream()
                 .map(item -> new ItemDto(item))
                 .collect(Collectors.toList());
+    }
+
+    public ItemDto updateItem(UUID id, CreateItemDto createItemDto) {
+        Item itemWithNewData = itemMapper.createItemDtoToItem(createItemDto);
+        Item existingItem = itemRepository.getItem(id);
+        BeanUtils.copyProperties(itemWithNewData, existingItem);
+        return new ItemDto(existingItem);
     }
 }

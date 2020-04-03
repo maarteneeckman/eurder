@@ -8,7 +8,10 @@ import com.switchfully.eurder.service.item.ItemMapper;
 import com.switchfully.eurder.service.item.ItemService;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ItemServiceTest {
 
@@ -86,7 +89,41 @@ class ItemServiceTest {
 
         //then
         assertThat(itemService.getAllItems()).containsExactlyInAnyOrder(new ItemDto(item1), new ItemDto(item2));
+    }
 
+    @Test
+    void updateItem_returnsCorrectInfo(){
+        //given
+        ItemRepository itemRepository = new ItemRepository();
+        ItemService itemService = new ItemService(itemRepository, new ItemMapper());
+
+        Item item = new Item(
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                12.5,
+                20);
+        itemRepository.addItem(item);
+        UUID originalId = item.getId();
+
+        CreateItemDto createItemDto = new CreateItemDto(
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                5,
+                20);
+
+        //when
+        ItemDto actualDto = itemService.updateItem(item.getId(),createItemDto);
+
+        ItemDto expectedDto = new ItemDto(UUID.randomUUID(),
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                5,
+                20);
+
+        //then
+        assertThat(actualDto).isEqualTo(expectedDto);
+        assertThat(actualDto.getItemId()).isEqualTo(item.getId());
+        assertThat(item.getId()).isEqualTo(originalId);
     }
 
 }

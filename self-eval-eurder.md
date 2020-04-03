@@ -88,7 +88,7 @@ Which choices did you make? (List your choices below, remove what is not relevan
  - [x] I commit/push my code when this story was done
 ### Comments: 
 ## Nice-To-Have stories
- - [ ] Story 4
+ - [x] Story 4
  - [ ] Story 5
  - [ ] Story 6
  - [ ] Story 9

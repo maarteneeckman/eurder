@@ -6,7 +6,6 @@ import com.switchfully.eurder.service.item.CreateItemDto;
 import com.switchfully.eurder.service.item.ItemDto;
 import com.switchfully.eurder.service.item.ItemMapper;
 import com.switchfully.eurder.service.item.ItemService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
@@ -38,7 +39,7 @@ class ItemControllerTest {
         //when
         ItemDto actual = itemController.addItem(createItemDto);
         //then
-        Assertions.assertThat(actual).isEqualTo(expectedItemDto);
+        assertThat(actual).isEqualTo(expectedItemDto);
     }
 
 
@@ -114,5 +115,47 @@ class ItemControllerTest {
                 .contains(expectedItemDto1, expectedItemDto2);
     }
 
+    @Test
+    void updateItem_returnsCorrectDto() {
+        //given an item
+        CreateItemDto createItemDto1 = new CreateItemDto(
+                "Pen",
+                "It writes underwater. It also writes other words.",
+                12.0,
+                20);
+        WebTestClient.ResponseSpec response = webTestClient.post()
+                .uri("/items")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(createItemDto1), CreateItemDto.class)
+                .exchange();
+        ItemDto itemDtoOriginal = response
+                .expectBody(ItemDto.class)
+                .returnResult()
+                .getResponseBody();
 
+        //given new information for that item
+        CreateItemDto createItemDtoUpdate = new CreateItemDto(
+                "Pen",
+                "It writes words. It also writes other words.",
+                12.0,
+                20);
+        //must return updated ItemDto
+        ItemDto itemDtoUpdateActual = webTestClient.put()
+                .uri("/items/" + itemDtoOriginal.getItemId().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(createItemDtoUpdate), CreateItemDto.class)
+                .exchange()
+                .expectBody(ItemDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        ItemDto itemDtoUpdateExpected = new ItemDto(
+                itemDtoOriginal.getItemId(),
+                "Pen",
+                "It writes words. It also writes other words.",
+                12.0,
+                20);
+
+        assertThat(itemDtoUpdateActual).isEqualTo(itemDtoUpdateExpected);
+    }
 }

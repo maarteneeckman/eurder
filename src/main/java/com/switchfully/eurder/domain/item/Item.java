@@ -6,8 +6,8 @@ import java.util.UUID;
 public class Item {
 
     private final UUID itemId;
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private double price;
     private int amountInStock;
 
@@ -37,6 +37,23 @@ public class Item {
 
     public int getAmountInStock() {
         return amountInStock;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setAmountInStock(int amountInStock) {
+        this.amountInStock = amountInStock;
     }
 
     @Override

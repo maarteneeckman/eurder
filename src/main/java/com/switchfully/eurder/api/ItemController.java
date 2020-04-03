@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "items")
@@ -30,6 +31,13 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public Collection<ItemDto> getAllItems() {
         return itemService.getAllItems();
+    }
+
+
+    @PutMapping(path = "{id}", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemDto updateItem(@PathVariable UUID id, @RequestBody CreateItemDto createItemDto) {
+        return itemService.updateItem(id, createItemDto);
     }
 
 
