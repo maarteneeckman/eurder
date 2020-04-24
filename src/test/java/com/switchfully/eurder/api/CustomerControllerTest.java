@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -89,13 +91,14 @@ class CustomerControllerTest {
             when(customerRepository.findAll()).thenReturn(Arrays.asList(customer, customer2));
 
             //then
-            Assertions.assertThat(controller.getAllCustomers()).containsExactlyInAnyOrder(customerDto, customerDto2);
+            assertThat(controller.getAllCustomers()).containsExactlyInAnyOrder(customerDto, customerDto2);
         }
 
     }
 
     @Nested
     @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.ANY)
     @DirtiesContext
     class TestWithSpringBootTest {
         @Autowired
