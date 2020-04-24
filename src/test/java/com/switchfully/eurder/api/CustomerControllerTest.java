@@ -3,7 +3,7 @@ package com.switchfully.eurder.api;
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.Customer.CustomerBuilder;
-import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.service.customer.CreateCustomerDto;
 import com.switchfully.eurder.service.customer.CustomerDto;
 import com.switchfully.eurder.service.customer.CustomerMapper;
@@ -30,12 +30,12 @@ class CustomerControllerTest {
     @Test
     void createCustomer_whenCustomerIsValid_returnsCorrectDto() {
         //given
-        CustomerController controller = new CustomerController(new CustomerService(new CustomerRepository(), new CustomerMapper()));
+        CustomerController controller = new CustomerController(new CustomerService(new CustomerRepositoryNoDB(), new CustomerMapper()));
         Customer customer = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         CustomerDto customerDto = new CustomerDto(customer);
@@ -47,7 +47,7 @@ class CustomerControllerTest {
                 10,
                 "Metropolis",
                 1000,
-                100);
+                "100");
         //when
         CustomerDto actual = controller.createCustomer(createCustomerDto);
         //then
@@ -77,7 +77,7 @@ class CustomerControllerTest {
                 10,
                 "Metropolis",
                 1000,
-                100);
+                "100");
         WebTestClient.ResponseSpec response = webTestClient.post()
                 .uri("/customers")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,14 +90,14 @@ class CustomerControllerTest {
     @Test
     void getAllCustomers_returnsAllCustomersAsDtos() {
         //given
-        CustomerRepository customerRepository = new CustomerRepository();
+        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
         CustomerController controller = new CustomerController(new CustomerService(customerRepository, new CustomerMapper()));
 
         Customer customer = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         CustomerDto customerDto = new CustomerDto(customer);
@@ -105,7 +105,7 @@ class CustomerControllerTest {
                 .withFirstName("Jane")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         CustomerDto customerDto2 = new CustomerDto(customer2);
@@ -137,7 +137,7 @@ class CustomerControllerTest {
                 10,
                 "Metropolis",
                 1000,
-                100);
+                "100");
         WebTestClient.ResponseSpec response1 = webTestClient.post()
                 .uri("/customers")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -161,7 +161,7 @@ class CustomerControllerTest {
                 "Doe",
                 "hello@gmail.com",
                 new Address("Main street",10,"Metropolis",1000),
-                100);
+                "100");
         assertThat(actual).isEqualTo(expected);
     }
 

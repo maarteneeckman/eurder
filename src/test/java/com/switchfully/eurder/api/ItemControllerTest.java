@@ -6,16 +6,21 @@ import com.switchfully.eurder.service.item.CreateItemDto;
 import com.switchfully.eurder.service.item.ItemDto;
 import com.switchfully.eurder.service.item.ItemMapper;
 import com.switchfully.eurder.service.item.ItemService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.springSecurity;
+import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
@@ -43,11 +48,16 @@ class ItemControllerTest {
     }
 
 
+
     @Autowired
-    private WebTestClient webTestClient;
+     WebTestClient webTestClient;
+
+
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void createItem_whenItemIsNotValid_returnStatus400() {
+
         WebTestClient.ResponseSpec response = this.webTestClient.post()
                 .uri("/items")
                 .contentType(MediaType.APPLICATION_JSON)

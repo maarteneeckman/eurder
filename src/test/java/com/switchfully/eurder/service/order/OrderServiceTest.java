@@ -2,7 +2,7 @@ package com.switchfully.eurder.service.order;
 
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
-import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
 import org.assertj.core.api.Assertions;
@@ -17,7 +17,7 @@ class OrderServiceTest {
     @Test
     void placeOrder_ifOrderIsValid_returnsOrderDto(){
         //given
-        CustomerRepository customerRepository = new CustomerRepository();
+        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
         ItemRepository itemRepository = new ItemRepository();
         OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
         OrderService orderService = new OrderService(orderMapper);
@@ -26,7 +26,7 @@ class OrderServiceTest {
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         UUID customerId = customer.getId();
@@ -58,7 +58,7 @@ class OrderServiceTest {
     @Test
     void placeOrder_ifOrderIsNotValid_throwsException(){
         //given
-        CustomerRepository customerRepository = new CustomerRepository();
+        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
         ItemRepository itemRepository = new ItemRepository();
         OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
         OrderService orderService = new OrderService(orderMapper);
@@ -68,7 +68,7 @@ class OrderServiceTest {
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         UUID customerId = customer.getId();

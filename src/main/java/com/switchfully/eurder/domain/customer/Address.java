@@ -1,10 +1,20 @@
 package com.switchfully.eurder.domain.customer;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Address {
-    private final String street;
-    private final int number;
-    private final String city;
-    private final int postcode;
+    @Column(name="street")
+    private String street;
+    @Column(name="housenumber")
+    private int number;
+    @Column(name="city")
+    private String city;
+    @Column(name="postcode")
+    private int postcode;
+
+    protected Address(){} //required for spring data
 
     public Address(String street, int number, String city, int postcode) {
         this.street = street;

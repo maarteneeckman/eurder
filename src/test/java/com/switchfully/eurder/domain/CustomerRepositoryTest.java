@@ -3,7 +3,7 @@ package com.switchfully.eurder.domain;
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.Customer.CustomerBuilder;
-import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.domain.exceptions.CustomerNotUniqueException;
 import org.assertj.core.api.Assertions;
@@ -19,12 +19,12 @@ class CustomerRepositoryTest {
     @Test
     void addCustomer_addsCustomer(){
         //given
-        CustomerRepository repo = new CustomerRepository();
+        CustomerRepositoryNoDB repo = new CustomerRepositoryNoDB();
         Customer customer = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis",1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         UUID customerId = customer.getId();
@@ -38,19 +38,19 @@ class CustomerRepositoryTest {
     @Test
     void addCustomer_ifCustomerAlreadyExists_throwException(){
         //given
-        CustomerRepository repo = new CustomerRepository();
+        CustomerRepositoryNoDB repo = new CustomerRepositoryNoDB();
         Customer customer = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis",1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         Customer customer2 = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis",1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         //when
@@ -62,7 +62,7 @@ class CustomerRepositoryTest {
     @Test
     void getCustomer_ifCustomerDoesNotExist_throwCustomerNotFoundException(){
         //given
-        CustomerRepository repo = new CustomerRepository();
+        CustomerRepositoryNoDB repo = new CustomerRepositoryNoDB();
         //then
         assertThatThrownBy(() -> repo.getCustomer(UUID.randomUUID())).isInstanceOf(CustomerNotFoundException.class);
     }
@@ -70,19 +70,19 @@ class CustomerRepositoryTest {
     @Test
     void getCustomers_givesAllCustomers(){
         //given
-        CustomerRepository repo = new CustomerRepository();
+        CustomerRepositoryNoDB repo = new CustomerRepositoryNoDB();
         Customer customer = CustomerBuilder.newCustomer()
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis",1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         Customer customer2 = CustomerBuilder.newCustomer()
                 .withFirstName("Jane")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis",1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         repo.addCustomer(customer);

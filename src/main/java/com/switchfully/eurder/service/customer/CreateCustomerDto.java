@@ -9,9 +9,9 @@ public class CreateCustomerDto {
     private final int houseNumber;
     private final String city;
     private final int postcode;
-    private final long phoneNumber;
+    private final String phoneNumber;
 
-    public CreateCustomerDto(String firstName, String lastName, String email, String street, int houseNumber, String city, int postcode, long phoneNumber) {
+    public CreateCustomerDto(String firstName, String lastName, String email, String street, int houseNumber, String city, int postcode, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -50,7 +50,7 @@ public class CreateCustomerDto {
         return postcode;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 }

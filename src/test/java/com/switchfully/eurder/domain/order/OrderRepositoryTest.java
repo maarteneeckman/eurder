@@ -19,7 +19,7 @@ class OrderRepositoryTest {
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         Item item = new Item(

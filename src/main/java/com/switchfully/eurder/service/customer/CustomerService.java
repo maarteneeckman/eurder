@@ -1,7 +1,7 @@
 package com.switchfully.eurder.service.customer;
 
 import com.switchfully.eurder.domain.customer.Customer;
-import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 @Component
 public class CustomerService {
 
-    private CustomerRepository customerRepository;
+    private CustomerRepositoryNoDB customerRepository;
     private CustomerMapper customerMapper;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerService(CustomerRepositoryNoDB customerRepository, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
@@ -44,9 +44,9 @@ public class CustomerService {
                 || createCustomerDto.getPostcode() <= 0) {
             throw new IllegalArgumentException("Address not valid");
         }
-        if (createCustomerDto.getPhoneNumber() <= 0) {
-            throw new IllegalArgumentException("Phone number not valid");
-        }
+//        if (createCustomerDto.getPhoneNumber() <= 0) {
+//            throw new IllegalArgumentException("Phone number not valid");
+//        }
     }
 
     public Collection<CustomerDto> getAllCustomers() {

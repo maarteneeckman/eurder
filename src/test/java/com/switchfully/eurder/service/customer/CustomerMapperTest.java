@@ -17,7 +17,7 @@ class CustomerMapperTest {
                 .withFirstName("John")
                 .withLastName("Doe")
                 .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber(100)
+                .withPhoneNumber("100")
                 .withEmail("hello@gmail.com")
                 .build();
         CreateCustomerDto createCustomerDto = new CreateCustomerDto(
@@ -28,7 +28,7 @@ class CustomerMapperTest {
                 10,
                 "Metropolis",
                 1000,
-                100);
+                "100");
         CustomerMapper customerMapper = new CustomerMapper();
         //when
         Customer actualCustomer = customerMapper.createCustomerDtoToCustomer(createCustomerDto);

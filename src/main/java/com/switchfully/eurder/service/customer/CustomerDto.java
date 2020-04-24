@@ -13,7 +13,7 @@ public class CustomerDto {
     private final String lastName;
     private final String email;
     private final Address address;
-    private final long phoneNumber;
+    private final String phoneNumber;
 
 
     public CustomerDto(Customer customer) {
@@ -26,7 +26,7 @@ public class CustomerDto {
     }
 
     //this "standard" constructor is necessary for tests: jackson needs it to deserialize a json file
-    public CustomerDto(UUID customerId, String firstName, String lastName, String email, Address address, long phoneNumber) {
+    public CustomerDto(UUID customerId, String firstName, String lastName, String email, Address address, String phoneNumber) {
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,7 +55,7 @@ public class CustomerDto {
         return address;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 

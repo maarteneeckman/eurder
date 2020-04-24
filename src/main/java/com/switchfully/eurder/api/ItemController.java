@@ -5,6 +5,7 @@ import com.switchfully.eurder.service.item.ItemDto;
 import com.switchfully.eurder.service.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -21,6 +22,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+    //@PreAuthorize("hasFeature('ADD_ITEM')")
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto addItem(@RequestBody CreateItemDto createItemDto) {

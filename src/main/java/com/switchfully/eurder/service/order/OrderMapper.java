@@ -1,7 +1,7 @@
 package com.switchfully.eurder.service.order;
 
 import com.switchfully.eurder.domain.customer.Customer;
-import com.switchfully.eurder.domain.customer.CustomerRepository;
+import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
 import com.switchfully.eurder.domain.order.ItemGroup;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 @Component
 public class OrderMapper {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerRepositoryNoDB customerRepository;
     private final ItemRepository itemRepository;
 
-    public OrderMapper(CustomerRepository customerRepository, ItemRepository itemRepository) {
+    public OrderMapper(CustomerRepositoryNoDB customerRepository, ItemRepository itemRepository) {
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
     }

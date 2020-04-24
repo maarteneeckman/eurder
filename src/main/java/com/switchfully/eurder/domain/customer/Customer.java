@@ -1,17 +1,30 @@
 package com.switchfully.eurder.domain.customer;
 
 
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name="customer")
 public class Customer {
 
-    private final UUID customerId;
-    private final String firstName;
-    private final String lastName;
+    @Id
+    @Column(name="customerid")
+    private UUID customerId;
+    @Column(name="firstname")
+    private String firstName;
+    @Column(name="lastname")
+    private String lastName;
+    @Column(name="email")
     private String email;
+    @Embedded
     private Address address;
-    private long phoneNumber;
+    @Column(name="phonenumber")
+    private String phoneNumber;
+
+    protected Customer(){} //required for spring data
+
 
     public Customer(CustomerBuilder builder) {
         this.customerId = UUID.randomUUID();
@@ -20,24 +33,6 @@ public class Customer {
         this.email = builder.email;
         this.address = builder.address;
         this.phoneNumber = builder.phoneNumber;
-    }
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return phoneNumber == customer.phoneNumber &&
-                Objects.equals(firstName, customer.firstName) &&
-                Objects.equals(lastName, customer.lastName) &&
-                Objects.equals(email, customer.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, email, phoneNumber);
     }
 
     public UUID getId() {
@@ -60,8 +55,24 @@ public class Customer {
         return address;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(firstName, customer.firstName) &&
+                Objects.equals(lastName, customer.lastName) &&
+                Objects.equals(email, customer.email) &&
+                Objects.equals(phoneNumber, customer.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email, phoneNumber);
     }
 
     /*
@@ -74,7 +85,7 @@ public class Customer {
         private String lastName;
         private String email;
         private Address address;
-        private long phoneNumber;
+        private String phoneNumber;
 
         public static CustomerBuilder newCustomer() {
             return new CustomerBuilder();
@@ -100,7 +111,7 @@ public class Customer {
             return this;
         }
 
-        public CustomerBuilder withPhoneNumber(long phoneNumber) {
+        public CustomerBuilder withPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }
