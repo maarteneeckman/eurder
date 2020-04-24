@@ -2,22 +2,32 @@ package com.switchfully.eurder.service.order;
 
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
-import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
+import com.switchfully.eurder.domain.customer.CustomerRepository;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
+    @Mock
+    CustomerRepository customerRepository;
+
     @Test
-    void placeOrder_ifOrderIsValid_returnsOrderDto(){
+    void placeOrder_ifOrderIsValid_returnsOrderDto() {
         //given
-        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
         ItemRepository itemRepository = new ItemRepository();
         OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
         OrderService orderService = new OrderService(orderMapper);
@@ -30,7 +40,7 @@ class OrderServiceTest {
                 .withEmail("hello@gmail.com")
                 .build();
         UUID customerId = customer.getId();
-        customerRepository.addCustomer(customer);
+        when(customerRepository.findById(any(UUID.class))).thenReturn(Optional.of(customer));
 
         Item item = new Item(
                 "Pen",
@@ -56,23 +66,11 @@ class OrderServiceTest {
     }
 
     @Test
-    void placeOrder_ifOrderIsNotValid_throwsException(){
+    void placeOrder_ifOrderIsNotValid_throwsException() {
         //given
-        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
         ItemRepository itemRepository = new ItemRepository();
         OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
         OrderService orderService = new OrderService(orderMapper);
-        //OrderController orderController = new OrderController(orderService);
-
-        Customer customer = Customer.CustomerBuilder.newCustomer()
-                .withFirstName("John")
-                .withLastName("Doe")
-                .withAddress(new Address("Main street", 10, "Metropolis", 1000))
-                .withPhoneNumber("100")
-                .withEmail("hello@gmail.com")
-                .build();
-        UUID customerId = customer.getId();
-        customerRepository.addCustomer(customer);
 
         Item item = new Item(
                 "Pen",
@@ -85,11 +83,13 @@ class OrderServiceTest {
         int amount = 0;
 
         CreateItemGroupDto createItemGroupDto = new CreateItemGroupDto(itemId, amount);
-        CreateOrderDto createOrderDto = new CreateOrderDto(customerId, List.of(createItemGroupDto));
+        CreateOrderDto createOrderDto = new CreateOrderDto(UUID.randomUUID(), List.of(createItemGroupDto));
+        //the customer-id is not relevant, because the ordered quantity is checked before the customer is retrieved
 
         //then
-        Assertions.assertThatThrownBy(()->orderService.placeOrder(createOrderDto))
-                .isInstanceOf(IllegalArgumentException.class);
+        Assertions.assertThatThrownBy(() -> orderService.placeOrder(createOrderDto))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Ordered quantity is not valid");
     }
 
 }

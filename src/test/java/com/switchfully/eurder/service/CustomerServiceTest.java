@@ -3,7 +3,6 @@ package com.switchfully.eurder.service;
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.CustomerRepository;
-import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.service.customer.CreateCustomerDto;
 import com.switchfully.eurder.service.customer.CustomerDto;
 import com.switchfully.eurder.service.customer.CustomerMapper;
@@ -14,9 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
@@ -27,7 +26,6 @@ class CustomerServiceTest {
     @Test
     void createCustomer_addsCustomerToRepository() {
         //given
-//        CustomerRepository customerRepository = new CustomerRepository();
         CustomerMapper customerMapper = new CustomerMapper();
         CustomerService service = new CustomerService(customerRepository, customerMapper);
         Customer customer = Customer.CustomerBuilder.newCustomer()
@@ -47,6 +45,8 @@ class CustomerServiceTest {
                 "Metropolis",
                 1000,
                 "100");
+        when(customerRepository.findAll()).thenReturn(Arrays.asList(customer));
+
         //when
         service.createCustomer(createCustomerDto);
         //then
@@ -56,7 +56,6 @@ class CustomerServiceTest {
     @Test
     void createCustomer_withInvalidData_throwsException(){
         //given
-//        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
         CustomerMapper customerMapper = new CustomerMapper();
         CustomerService service = new CustomerService(customerRepository, customerMapper);
         CreateCustomerDto createCustomerDto = new CreateCustomerDto("","","","",0,"",0,"0");

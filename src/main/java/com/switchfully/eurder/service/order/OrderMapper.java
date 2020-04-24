@@ -1,7 +1,9 @@
 package com.switchfully.eurder.service.order;
 
 import com.switchfully.eurder.domain.customer.Customer;
+import com.switchfully.eurder.domain.customer.CustomerRepository;
 import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
+import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
 import com.switchfully.eurder.domain.order.ItemGroup;
@@ -15,16 +17,16 @@ import java.util.stream.Collectors;
 @Component
 public class OrderMapper {
 
-    private final CustomerRepositoryNoDB customerRepository;
+    private final CustomerRepository customerRepository;
     private final ItemRepository itemRepository;
 
-    public OrderMapper(CustomerRepositoryNoDB customerRepository, ItemRepository itemRepository) {
+    public OrderMapper(CustomerRepository customerRepository, ItemRepository itemRepository) {
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
     }
 
     public Order createOrderDtoToOrder(CreateOrderDto createOrderDto) {
-        Customer customer = customerRepository.getCustomer(createOrderDto.getCustomerId());
+        Customer customer = customerRepository.findById(createOrderDto.getCustomerId()).orElseThrow(() ->new CustomerNotFoundException("Customer does not exist."));
         List<ItemGroup> itemGroups = createOrderDto.getCreateItemGroupDtos().stream()
                 .map(groupDto -> itemGroupDtoToItemGroup(groupDto))
                 .collect(Collectors.toList());
