@@ -1,22 +1,26 @@
 package com.switchfully.eurder.service.customer;
 
 import com.switchfully.eurder.domain.customer.Customer;
+import com.switchfully.eurder.domain.customer.CustomerRepository;
 import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
+import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 public class CustomerService {
 
-    private CustomerRepositoryNoDB customerRepository;
+    private CustomerRepository customerRepository;
     private CustomerMapper customerMapper;
 
     @Autowired
-    public CustomerService(CustomerRepositoryNoDB customerRepository, CustomerMapper customerMapper) {
+    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
@@ -24,7 +28,7 @@ public class CustomerService {
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
         validateCustomerData(createCustomerDto);
         Customer customer = customerMapper.createCustomerDtoToCustomer(createCustomerDto);
-        customerRepository.addCustomer(customer);
+        customerRepository.save(customer);
         return new CustomerDto(customer);
     }
 
@@ -50,13 +54,13 @@ public class CustomerService {
     }
 
     public Collection<CustomerDto> getAllCustomers() {
-        return customerRepository.getCustomers().stream()
-                .map(customer -> new CustomerDto(customer))
-                .collect(Collectors.toList());
+        Collection<CustomerDto> allCustomerDtos = new ArrayList<>();
+        customerRepository.findAll().forEach(customer -> allCustomerDtos.add(new CustomerDto(customer)));
+        return allCustomerDtos;
     }
 
     public CustomerDto getCustomerById(UUID id) {
-        Customer customer = customerRepository.getCustomer(id);
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException("Customer does not exist."));
         return new CustomerDto(customer);
     }
 }

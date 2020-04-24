@@ -2,6 +2,7 @@ package com.switchfully.eurder.service;
 
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
+import com.switchfully.eurder.domain.customer.CustomerRepository;
 import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.service.customer.CreateCustomerDto;
 import com.switchfully.eurder.service.customer.CustomerDto;
@@ -9,13 +10,24 @@ import com.switchfully.eurder.service.customer.CustomerMapper;
 import com.switchfully.eurder.service.customer.CustomerService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
+
+    @Mock
+    CustomerRepository customerRepository;
 
     @Test
     void createCustomer_addsCustomerToRepository() {
         //given
-        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
+//        CustomerRepository customerRepository = new CustomerRepository();
         CustomerMapper customerMapper = new CustomerMapper();
         CustomerService service = new CustomerService(customerRepository, customerMapper);
         Customer customer = Customer.CustomerBuilder.newCustomer()
@@ -38,13 +50,13 @@ class CustomerServiceTest {
         //when
         service.createCustomer(createCustomerDto);
         //then
-        Assertions.assertThat(customerRepository.getCustomers().size()).isEqualTo(1);
+        Assertions.assertThat(customerRepository.findAll().iterator().hasNext()).isEqualTo(true);
     }
 
     @Test
     void createCustomer_withInvalidData_throwsException(){
         //given
-        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
+//        CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
         CustomerMapper customerMapper = new CustomerMapper();
         CustomerService service = new CustomerService(customerRepository, customerMapper);
         CreateCustomerDto createCustomerDto = new CreateCustomerDto("","","","",0,"",0,"0");

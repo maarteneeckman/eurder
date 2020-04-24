@@ -64,10 +64,10 @@ public class CustomerDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CustomerDto that = (CustomerDto) o;
-        return phoneNumber == that.phoneNumber &&
-                Objects.equals(firstName, that.firstName) &&
+        return Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
-                Objects.equals(email, that.email);
+                Objects.equals(email, that.email) &&
+                Objects.equals(phoneNumber, that.phoneNumber);
     }
 
     @Override
@@ -75,5 +75,15 @@ public class CustomerDto {
         return Objects.hash(firstName, lastName, email, phoneNumber);
     }
 
-
+    @Override
+    public String toString() {
+        return "CustomerDto{" +
+                "customerId=" + customerId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", address=" + address +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }
