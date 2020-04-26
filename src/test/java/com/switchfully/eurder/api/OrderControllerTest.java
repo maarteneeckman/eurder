@@ -3,18 +3,21 @@ package com.switchfully.eurder.api;
 import com.switchfully.eurder.domain.customer.Address;
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.CustomerRepository;
-import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
+import com.switchfully.eurder.domain.item.ItemRepositoryNoDB;
 import com.switchfully.eurder.service.customer.CreateCustomerDto;
 import com.switchfully.eurder.service.customer.CustomerDto;
 import com.switchfully.eurder.service.item.CreateItemDto;
 import com.switchfully.eurder.service.item.ItemDto;
 import com.switchfully.eurder.service.order.*;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -43,10 +47,13 @@ class OrderControllerTest {
         @Mock
         CustomerRepository customerRepository;
 
+        @Mock
+        ItemRepository itemRepository;
+
         @Test
         void placeOrder_returnsCorrectDto() {
             //given
-            ItemRepository itemRepository = new ItemRepository();
+//            ItemRepositoryNoDB itemRepository = new ItemRepositoryNoDB();
             OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
             OrderService orderService = new OrderService(orderMapper);
             OrderController orderController = new OrderController(orderService);
@@ -67,7 +74,7 @@ class OrderControllerTest {
                     12.5,
                     20);
             UUID itemId = item.getId();
-            itemRepository.addItem(item);
+            when(itemRepository.findById(any(UUID.class))).thenReturn(Optional.of(item));
 
             int amount = 5;
 
@@ -88,7 +95,7 @@ class OrderControllerTest {
         void placeOrder_ifItemNotInStock_returnsCorrectDto() {
             //given
 //            CustomerRepositoryNoDB customerRepository = new CustomerRepositoryNoDB();
-            ItemRepository itemRepository = new ItemRepository();
+//            ItemRepositoryNoDB itemRepository = new ItemRepositoryNoDB();
             OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
             OrderService orderService = new OrderService(orderMapper);
             OrderController orderController = new OrderController(orderService);
@@ -109,7 +116,7 @@ class OrderControllerTest {
                     12.5,
                     0);
             UUID itemId = item.getId();
-            itemRepository.addItem(item);
+            when(itemRepository.findById(itemId)).thenReturn(Optional.of(item));
 
             int amount = 5;
 
@@ -183,9 +190,14 @@ class OrderControllerTest {
                     .returnResult()
                     .getResponseBody();
 
+            Assertions.assertThat(itemDto.toString()).isNotNull();
+            Assertions.assertThat(itemDto.getItemId()).isNotNull();
+
             //place an order
             CreateItemGroupDto groupDto = new CreateItemGroupDto(itemDto.getItemId(), 5);
             CreateOrderDto createOrderDto = new CreateOrderDto(customerDto.getCustomerId(), List.of(groupDto));
+
+            Assertions.assertThat(createOrderDto.getCreateItemGroupDtos().get(0).getItemId()).isEqualByComparingTo(itemDto.getItemId());
 
             WebTestClient.ResponseSpec response = webTestClient.post()
                     .uri("/orders")
@@ -195,11 +207,11 @@ class OrderControllerTest {
 
             //then
             response.expectStatus().isEqualTo(HttpStatus.CREATED);
-
-            OrderDto expectedOrderDto = new OrderDto(UUID.randomUUID(),
-                    customerDto.getCustomerId(),
-                    List.of(new ItemGroupDto(itemDto.getItemId(), 5, LocalDate.now().plusDays(1), 62.5)));
-            response.expectBody(OrderDto.class).isEqualTo(expectedOrderDto);
+//
+//            OrderDto expectedOrderDto = new OrderDto(UUID.randomUUID(),
+//                    customerDto.getCustomerId(),
+//                    List.of(new ItemGroupDto(itemDto.getItemId(), 5, LocalDate.now().plusDays(1), 62.5)));
+//            response.expectBody(OrderDto.class).isEqualTo(expectedOrderDto);
         }
 
     }

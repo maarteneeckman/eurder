@@ -14,7 +14,7 @@ class ItemRepositoryTest {
     @Test
     void addItem_ifItemDoesNotExistYet_addsItemToRepository(){
         //given
-        ItemRepository itemRepository = new ItemRepository();
+        ItemRepositoryNoDB itemRepository = new ItemRepositoryNoDB();
         Item item = new Item("Cookie","It's delicious", 5.0, 100);
         UUID itemId = item.getId();
         //when
@@ -26,7 +26,7 @@ class ItemRepositoryTest {
     @Test
     void addItem_ifItemAlreadyExists_throwsException(){
         //given
-        ItemRepository itemRepository = new ItemRepository();
+        ItemRepositoryNoDB itemRepository = new ItemRepositoryNoDB();
         Item item = new Item("Cookie","It's delicious", 5.0, 100);
         Item item2 = new Item("Cookie","It's delicious", 5.0, 100);
         //when
@@ -38,7 +38,7 @@ class ItemRepositoryTest {
     @Test
     void getItem_ifItemDoesNotExist_throwException(){
         //given
-        ItemRepository itemRepository = new ItemRepository();
+        ItemRepositoryNoDB itemRepository = new ItemRepositoryNoDB();
         //then
         assertThatThrownBy(() -> itemRepository.getItem(UUID.randomUUID())).isInstanceOf(ItemNotFoundException.class);
 

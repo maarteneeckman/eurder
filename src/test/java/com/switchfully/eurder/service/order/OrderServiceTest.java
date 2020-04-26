@@ -5,6 +5,7 @@ import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.CustomerRepository;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
+import com.switchfully.eurder.domain.item.ItemRepositoryNoDB;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,10 +26,13 @@ class OrderServiceTest {
     @Mock
     CustomerRepository customerRepository;
 
+    @Mock
+    ItemRepository itemRepository;
+
     @Test
     void placeOrder_ifOrderIsValid_returnsOrderDto() {
         //given
-        ItemRepository itemRepository = new ItemRepository();
+//        ItemRepositoryNoDB itemRepository = new ItemRepositoryNoDB();
         OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
         OrderService orderService = new OrderService(orderMapper);
 
@@ -48,7 +52,7 @@ class OrderServiceTest {
                 12.5,
                 20);
         UUID itemId = item.getId();
-        itemRepository.addItem(item);
+        when(itemRepository.findById(itemId)).thenReturn(Optional.of(item));
 
         int amount = 5;
 
@@ -68,7 +72,7 @@ class OrderServiceTest {
     @Test
     void placeOrder_ifOrderIsNotValid_throwsException() {
         //given
-        ItemRepository itemRepository = new ItemRepository();
+//        ItemRepositoryNoDB itemRepository = new ItemRepositoryNoDB();
         OrderMapper orderMapper = new OrderMapper(customerRepository, itemRepository);
         OrderService orderService = new OrderService(orderMapper);
 
@@ -78,7 +82,8 @@ class OrderServiceTest {
                 12.5,
                 20);
         UUID itemId = item.getId();
-        itemRepository.addItem(item);
+
+        //when(itemRepository.findById(itemId)).thenReturn(Optional.of(item));
 
         int amount = 0;
 

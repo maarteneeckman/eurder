@@ -1,15 +1,31 @@
 package com.switchfully.eurder.domain.item;
 
+import net.bytebuddy.asm.Advice;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name="item")
 public class Item {
 
-    private final UUID itemId;
+    @Id
+    @Column(name="itemid")
+    private UUID itemId;
+    @Column(name="name")
     private String name;
+    @Column(name="description")
     private String description;
+    @Column(name="price")
     private double price;
+    @Column(name="amountinstock")
     private int amountInStock;
+
+    protected Item(){} //required for spring data
 
     public Item(String name, String description, double price, int amountInStock) {
         this.itemId = UUID.randomUUID();

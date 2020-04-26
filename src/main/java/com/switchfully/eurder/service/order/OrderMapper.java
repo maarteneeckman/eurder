@@ -2,10 +2,11 @@ package com.switchfully.eurder.service.order;
 
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.CustomerRepository;
-import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
+import com.switchfully.eurder.domain.exceptions.ItemNotFoundException;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.item.ItemRepository;
+import com.switchfully.eurder.domain.item.ItemRepositoryNoDB;
 import com.switchfully.eurder.domain.order.ItemGroup;
 import com.switchfully.eurder.domain.order.Order;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class OrderMapper {
     }
 
     public ItemGroup itemGroupDtoToItemGroup(CreateItemGroupDto groupDto) {
-        Item item = itemRepository.getItem(groupDto.getItemId());
+        Item item = itemRepository.findById(groupDto.getItemId()).orElseThrow(() -> new ItemNotFoundException("Item does not exist."));
         int amount = groupDto.getAmount();
         LocalDate deliveryDate;
         if (item.getAmountInStock() >= amount) {

@@ -2,16 +2,13 @@ package com.switchfully.eurder.service.customer;
 
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.customer.CustomerRepository;
-import com.switchfully.eurder.domain.customer.CustomerRepositoryNoDB;
 import com.switchfully.eurder.domain.exceptions.CustomerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class CustomerService {
